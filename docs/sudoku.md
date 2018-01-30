@@ -18,13 +18,13 @@ simple tactics to fill in an as many open tiles as possible.
 
 A valid Sudoku solution has the following properties:
 
-    * In each of the 9 rows, each digit 1..9 appears
+* In each of the 9 rows, each digit 1..9 appears
     exactly once.  (No duplicates, and no missing digits.)
 
-    * In each of the 9 columns, each digit 1..9 appears
+* In each of the 9 columns, each digit 1..9 appears
     exactly once.
  
-    * The board can be divided into 9 subregion blocks, each 3x3.
+* The board can be divided into 9 subregion blocks, each 3x3.
     In each of these blocks, each digit 1..9 appears
     exactly once.
 
