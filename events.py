@@ -1,18 +1,19 @@
 """
-Event definitions and interfaces --- 
-used for Model-View-Controller user 
+Event definitions and interfaces ---
+used for Model-View-Controller user
 interface but also for other coordination
-based on event notification. 
+based on event notification.
 
 In this variation on listeners, we use a subclass
-for each event type. This gives us a flexible way to 
+for each event type. This gives us a flexible way to
 add specific information for different kinds of
-events, if we need to. 
+events, if we need to.
 """
 
 # ------------
 #  The events
 # ------------
+
 
 class Event(object):
     """Abstract base class of all events, both for MVC
@@ -22,14 +23,14 @@ class Event(object):
 
 
 # class BoardEvent(Event):
-#     """Abstract base class for things that happen 
-#     to the Sudoku board as a whole.  
+#     """Abstract base class for things that happen
+#     to the Sudoku board as a whole.
 #     """
 #     def __init__(self, grid: board.Board):
 #         self.grid = grid
 
 # Concrete events.  For many of these, the only additional
-# information is the class itself. 
+# information is the class itself.
 
 
 # class TileCreated(BoardEvent):
@@ -38,11 +39,11 @@ class Event(object):
 # ---------------
 # Listeners
 # ---------------
- 
+
 class Listener(object):
-    """Abstract base class for listeners. 
-    Subclass this to make the notification do 
-    something useful. 
+    """Abstract base class for listeners.
+    Subclass this to make the notification do
+    something useful.
     """
 
     def __init__(self):
@@ -50,9 +51,7 @@ class Listener(object):
         pass
 
     def notify(self, event: Event):
-        """The 'notify' method of the base class must be 
-        overridden in concrete classes. 
+        """The 'notify' method of the base class must be
+        overridden in concrete classes.
         """
         raise NotImplementedError("You must override Listener.notify")
-
-        

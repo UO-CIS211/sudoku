@@ -20,7 +20,7 @@ log.setLevel(logging.INFO)
 # board, e.g., using symbols other than '0'..'9' for
 # tiles.
 CHOICES = ['1', '2', '3', '4', '5',
-           '6', '7', '8', '9' ]
+           '6', '7', '8', '9']
 UNKNOWN = '.'
 
 # -------------------------------
@@ -31,9 +31,10 @@ UNKNOWN = '.'
 
 class TileEvent(Event):
     """Abstract base class for things that happen
-    to tiles. We always indicate the tile.  Concrete 
-    subclasses indicate the nature of the event. 
+    to tiles. We always indicate the tile.  Concrete
+    subclasses indicate the nature of the event.
     """
+
     def __init__(self, tile: 'Tile'):
         self.tile = tile
         # Note 'Tile' type is a forward reference;
@@ -45,22 +46,28 @@ class TileEvent(Event):
             self.value, self.candidates)
 
 # A subclass for each kind of event
+
+
 class TileChanged(TileEvent):
     """Something has changed, either value or candidates"""
     pass
 
+
 class TileGuessed(TileEvent):
     """This value change is a guess by the back-track solver"""
-    pass 
+    pass
+
 
 class TileAttend(TileEvent):
     """This tile currently participating in constraint propagation"""
     pass
 
+
 class TileUnattend(TileEvent):
     """Done with this tile for now"""
     pass
-            
+
+
 class TileListener(Listener):
     def notify(self, event: TileEvent):
         raise NotImplementedError(
@@ -69,6 +76,7 @@ class TileListener(Listener):
 # ------------------------------
 #  Tile class
 # ------------------------------
+
 
 class Tile(object):
     """One tile on the Sudoku grid.
@@ -79,15 +87,15 @@ class Tile(object):
     value.  If candidates is empty, then no tile value can
     be consistent with other tile values in the grid.
 
-    value and candidates are public read-only attributes; change them 
-    only through the access methods set_value and eliminate. 
+    value and candidates are public read-only attributes; change them
+    only through the access methods set_value and eliminate.
     """
 
     def __init__(self, row: int, col: int, value=UNKNOWN):
         assert value == UNKNOWN or value in CHOICES
         self.row = row
         self.col = col
-        self.listeners = [ ]
+        self.listeners = []
         self.set_value(value)
 
     def add_listener(self, listener: TileListener):
@@ -103,7 +111,7 @@ class Tile(object):
         return self.value
 
     def __repr__(self) -> str:
-        return "Tile({},{},'{}')".format(self.row,self.col,self.value)
+        return "Tile({},{},'{}')".format(self.row, self.col, self.value)
 
     def set_value(self, value, guess=False):
         if value in CHOICES:
@@ -114,15 +122,14 @@ class Tile(object):
             self.candidates = set(CHOICES)
         if guess:
             self.notify_all(TileGuessed(self))
-        else: 
+        else:
             self.notify_all(TileChanged(self))
 
-
     def could_be(self, value: str) -> bool:
-        """Could this tile take the value 
+        """Could this tile take the value
         return value in self.candidates
         """
-        return value in self.candidates 
+        return value in self.candidates
 
     def eliminate(self, choices: Set[str]) -> bool:
         """Eliminate the choices from candidates for
@@ -136,7 +143,7 @@ class Tile(object):
         # Careful! If you want to compare the value
         # of candidates before and after the operation,
         # you'll need to make a *copy* of the set, because
-        # sets are mutable! 
+        # sets are mutable!
         return False
 
     def attend(self):
@@ -166,4 +173,4 @@ class Tile(object):
 # add additional fields in a subclass for a particular event
 # type.  A disadvantage is that we need to use the isinstance()
 # method (usually in the view component) to determine which
-# event type it is.  
+# event type it is.

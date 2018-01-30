@@ -1,6 +1,6 @@
 """
-Reading and writing Sudoku boards.  We use the minimal 
-subset of the SadMan Sudoku ".sdk" format, 
+Reading and writing Sudoku boards.  We use the minimal
+subset of the SadMan Sudoku ".sdk" format,
 see http://www.sadmansoftware.com/sudoku/faq19.php
 
 Author: M Young, January 2018
@@ -12,8 +12,10 @@ from typing import List, Union
 import sys
 from io import IOBase
 
+
 class InputError(Exception):
     pass
+
 
 def read(f: Union[IOBase, str], board: sdk_board.Board=None) -> sdk_board.Board:
     """Read a Sudoku board from a file.  Pass in a path
@@ -21,23 +23,22 @@ def read(f: Union[IOBase, str], board: sdk_board.Board=None) -> sdk_board.Board:
     filled.
     """
     if isinstance(f, str):
-        f = open(f,"r")
+        f = open(f, "r")
     if board is None:
         board = sdk_board.Board()
-    values = [ ]
+    values = []
     for row in f:
         row = row.strip()
         values.append(row)
         if len(row) != 9:
             raise InputError("Puzzle row wrong length: {}"
-                                 .format(row))
+                             .format(row))
     if len(values) != 9:
         raise InputError("Wrong number of rows in {}"
-                             .format(values))
+                         .format(values))
     board.set_tiles(values)
     return board
 
+
 def write(board: sdk_board.Board, f: IOBase=sys.stdout):
     """Print the board"""
-    
-        

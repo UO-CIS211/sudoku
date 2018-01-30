@@ -1,7 +1,7 @@
 """
-Sudoku solution tactics.  These include the 
-constraint propogation tactics and (in phase 
-two) the search-based solver. 
+Sudoku solution tactics.  These include the
+constraint propogation tactics and (in phase
+two) the search-based solver.
 
 Author: FIXME
 """
@@ -14,6 +14,7 @@ logging.basicConfig()
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
 
+
 def naked_single(board: Board) -> bool:
     """As described in http://www.sadmansoftware.com/sudoku/nakedsingle.php
     Returns True iff some change has been made
@@ -23,6 +24,7 @@ def naked_single(board: Board) -> bool:
     for group in board.groups:
         changed = group.naked_single_constrain() or changed
     return changed
+
 
 def hidden_single(board: Board) -> bool:
     """As described in http://www.sadmansoftware.com/sudoku/hiddensingle.php
@@ -34,31 +36,30 @@ def hidden_single(board: Board) -> bool:
         changed = group.hidden_single_constrain() or changed
     return changed
 
+
 def propagate(board: Board):
-    """Propagate constraints until we either solve the puzzle, 
-    show the puzzle as given is unsolvable, or can make no more 
-    progress by constraint propagation. 
+    """Propagate constraints until we either solve the puzzle,
+    show the puzzle as given is unsolvable, or can make no more
+    progress by constraint propagation.
     """
     logging.info("Propagating constraints")
     changed = True
     while changed:
         logging.info("Invoking naked single")
         changed = naked_single(board)
-        if board.is_solved() or not board.is_consistent(): 
-            return 
+        if board.is_solved() or not board.is_consistent():
+            return
         changed = hidden_single(board) or changed
         if board.is_solved() or not board.is_consistent():
             return
-    return 
-        
+    return
+
+
 def solve(board: Board) -> bool:
-    """Main solver.  Initially this just invokes constraint 
-    propagation.  In phase 2 of the project, you will add 
-    recursive back-tracking search (guess-and-check with recursion). 
+    """Main solver.  Initially this just invokes constraint
+    propagation.  In phase 2 of the project, you will add
+    recursive back-tracking search (guess-and-check with recursion).
     """
     log.debug("Called solve on board:\n{}".format(board))
     propagate(board)
     return board.is_solved()
-
-            
-    
