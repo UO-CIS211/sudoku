@@ -46,7 +46,7 @@ def main():
 
     if args.display:
         input("Press enter to shut down")
-        display.close
+        display.close()
     if args.text:
         monitor.close()
 
