@@ -9,10 +9,11 @@ You may want to combine it with debugging log data.
 
 Author: M Young, January 2018 for CIS 211
 """
-
 # Peer classes from model
 import sdk_board
 import sdk_tile
+
+from typing import List
 
 # Sudoku boards are always 9x9. The symbolic constants just help clarify
 # the code a little, and would help us find dependency if we ever adapted
@@ -37,7 +38,7 @@ class Board(object):
             for tile in row:
                 tile.add_listener(self)
         print("**Initial board: \n{}\n***\n\n".format(model))
-        self.attending: Sequence[sdk_tile.tile] = []
+        self.attending: List[sdk_tile.Tile] = []
         self.between_groups = True
 
     def _update(self, event: sdk_tile.TileEvent):

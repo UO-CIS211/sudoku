@@ -7,7 +7,6 @@ exactly one occurence of each of the 9 symbols
 on the board.
 """
 
-import typing
 from typing import Sequence, Set, List
 
 from events import Event, Listener
@@ -51,7 +50,7 @@ class Board(object):
     def __init__(self):
         """The empty board"""
         # Row/Column structure: Each row contains columns
-        self.tiles: Sequence[sdk_tile.Tile] = []
+        self.tiles: List[Tile] = []
         for row in range(9):
             cols = []
             for col in range(9):
@@ -84,7 +83,7 @@ class Board(object):
         # FIXME
         pass
 
-    def set_tiles(self, tile_values: Sequence[Sequence[str]]):
+    def set_tiles(self, tile_values: List[List[str]]):
         """Set the tile values a list of lists or a list of strings"""
         for row_num in range(9):
             for col_num in range(9):
@@ -111,7 +110,7 @@ class Board(object):
                 return False
         return True
 
-    def duplicates(self) -> Sequence[str]:
+    def duplicates(self) -> List[str]:
         """A list of duplicates found in groups"""
         reports = []
         for group in self.groups:
