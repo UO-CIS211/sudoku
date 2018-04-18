@@ -17,7 +17,8 @@ class InputError(Exception):
     pass
 
 
-def read(f: Union[IOBase, str], board: sdk_board.Board=None) -> sdk_board.Board:
+def read(f: Union[IOBase, str],
+         board: sdk_board.Board=None) -> sdk_board.Board:
     """Read a Sudoku board from a file.  Pass in a path
     or an already opened file.  Optionally pass in a board to be
     filled.
@@ -37,6 +38,7 @@ def read(f: Union[IOBase, str], board: sdk_board.Board=None) -> sdk_board.Board:
         raise InputError("Wrong number of rows in {}"
                          .format(values))
     board.set_tiles(values)
+    f.close()
     return board
 
 
