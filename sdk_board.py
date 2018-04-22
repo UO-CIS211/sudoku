@@ -50,7 +50,7 @@ class Board(object):
     def __init__(self):
         """The empty board"""
         # Row/Column structure: Each row contains columns
-        self.tiles: List[Tile] = []
+        self.tiles: List[List[Tile]] = []
         for row in range(9):
             cols = []
             for col in range(9):
