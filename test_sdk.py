@@ -35,8 +35,7 @@ class test_tile_ops(unittest.TestCase):
         self.assertEqual(tile.value, sdk_tile.UNKNOWN)
         self.assertEqual(tile.candidates, set(sdk_tile.CHOICES))
         tile.eliminate({"3", "4", "5"})
-        self.assertEqual(tile.candidates,
-                         {"1", "2", "6", "7", "8", "9"})
+        self.assertEqual(tile.candidates, {"1", "2", "6", "7", "8", "9"})
         tile.eliminate({"1", "2", "6"})
         self.assertEqual(tile.candidates, {"7", "8", "9"})
         self.assertTrue(tile.could_be("8"))
