@@ -7,10 +7,10 @@ exactly one occurence of each of the 9 symbols
 on the board.
 """
 
-from typing import Sequence, Set, List
+from typing import List
 
 from events import Event, Listener
-from sdk_tile import Tile, CHOICES, UNKNOWN
+from sdk_tile import Tile
 from sdk_group import Group
 
 import logging

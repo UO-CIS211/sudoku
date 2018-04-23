@@ -5,8 +5,8 @@ or 'box').
 
 Constraint propagation are localized here.
 """
-import typing
-from typing import Sequence
+
+from typing import List
 
 import sdk_tile
 
@@ -22,7 +22,7 @@ class Group(object):
     def __init__(self, title: str):
         """Intially empty.  The title is just for debugging."""
         self.title = title
-        self.tiles: Sequence[sdk_tile.Tile] = []
+        self.tiles: List[sdk_tile.Tile] = []
 
     def add(self, tile: sdk_tile.Tile):
         """Add a tile to this group"""
@@ -62,30 +62,10 @@ class Group(object):
         every tile has at least one candidate, and
         every value has a place to go.
         """
-        can_place = set()
-        used = set()
-        for tile in self.tiles:
-            # At least one candidate?
-            if len(tile.candidates) == 0:
-                log.debug("No candidates for tile {},{}:{}"
-                          .format(tile.row, tile.col, tile.value))
-                return False
-            # Duplicate checking
-            if tile.value in used:
-                # Duplicate!
-                log.debug("Tile {},{}:{} is a duplicate"
-                          .format(tile.row, tile.col, tile.value))
-                return False
-            elif tile.value != sdk_tile.UNKNOWN:
-                used.add(tile.value)
-            # A place for every tile?
-            can_place = can_place | tile.candidates
-        if can_place != set(sdk_tile.CHOICES):
-            log.debug("Group {}, no place for {}"
-                      .format(self, set(sdk_tile.CHOICES) - can_place))
-        return can_place == set(sdk_tile.CHOICES)
+        #FIXME:  Is this board consistent?
+        return False
 
-    def duplicates(self) -> Sequence[str]:
+    def duplicates(self) -> List[str]:
         """One line report per duplicate found"""
         reports = []
         used = set()
