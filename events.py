@@ -22,20 +22,6 @@ class Event(object):
     pass
 
 
-# class BoardEvent(Event):
-#     """Abstract base class for things that happen
-#     to the Sudoku board as a whole.
-#     """
-#     def __init__(self, grid: board.Board):
-#         self.grid = grid
-
-# Concrete events.  For many of these, the only additional
-# information is the class itself.
-
-
-# class TileCreated(BoardEvent):
-#     pass
-
 # ---------------
 # Listeners
 # ---------------
