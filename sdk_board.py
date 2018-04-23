@@ -50,7 +50,7 @@ class Board(object):
     def __init__(self):
         """The empty board"""
         # Row/Column structure: Each row contains columns
-        self.tiles: List[Tile] = []
+        self.tiles: List[List[Tile]] = []
         for row in range(9):
             cols = []
             for col in range(9):
@@ -83,7 +83,7 @@ class Board(object):
         # FIXME
         pass
 
-    def set_tiles(self, tile_values: List[List[str]]):
+    def set_tiles(self, tile_values: List[str]):
         """Set the tile values a list of lists or a list of strings"""
         for row_num in range(9):
             for col_num in range(9):
