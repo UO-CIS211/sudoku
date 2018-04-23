@@ -81,7 +81,11 @@ class Group(object):
     # Constraint propagation in a group
     # ----------------------------------
     def naked_single_constrain(self) -> bool:
-        """A choice can be used at most once in the group."""
+        """A choice can be used at most once in the group.
+        For each choice that has already been used in the group,
+        eliminate that choice as a candidate in all the
+        UNKNOWN tiles in the group.
+        """
         self.attend()
         changed = False
         # Which values have already been used?
@@ -92,7 +96,14 @@ class Group(object):
         return changed
 
     def hidden_single_constrain(self) -> bool:
-        """Each choice must be used in the group"""
+        """Each choice must be used in the group.
+        For each choice that has not already been used
+        in the group, if there is exactly one tile in the
+        group for which it is a candidate, then that
+        tile must hold that choice.  Note this depends
+        on narrowing of candidates by naked_single. Hidden
+        single can only work in combination with naked single.
+        """
         self.attend()
         changed = False
         # FIXME:  If there is exactly one tile in this
