@@ -7,16 +7,16 @@ exactly one occurence of each of the 9 symbols
 on the board.
 """
 
-from typing import List
+from typing import Sequence, List
 
 from events import Event, Listener
-from sdk_tile import Tile
+from sdk_tile import Tile, UNKNOWN
 from sdk_group import Group
 
 import logging
 logging.basicConfig()
 log = logging.getLogger(__name__)
-log.setLevel(logging.DEBUG)
+log.setLevel(logging.WARN)
 
 
 # -------------------------------
@@ -56,19 +56,23 @@ class Board(object):
             for col in range(9):
                 cols.append(Tile(row, col))
             self.tiles.append(cols)
+
+        self.groups = []
         self._form_groups()
 
     def _form_groups(self):
         """Build a group for each row, column, and block """
-        self.groups = []
         self._build_row_groups()
         self._build_column_groups()
         self._build_block_groups()
 
     def _build_row_groups(self):
         """Add a group for each row"""
-        # FIXME
-        pass
+        for row_index in range(9):
+            row_group = Group("Row {}".format(row_index + 1))
+            for col_index in range(9):
+                row_group.add(self.tiles[row_index][col_index])
+            self.groups.append(row_group)
 
     def _build_column_groups(self):
         """Add a group for each column"""
@@ -80,10 +84,20 @@ class Board(object):
 
     def _build_block_groups(self):
         """Add a group for each 3x3 block"""
-        # FIXME
-        pass
+        for row_group in range(3):
+            for col_group in range(3):
+                block_group = Group("Block from {},{}"
+                                    .format(row_group, col_group))
+                row_base = 3 * row_group
+                col_base = 3 * col_group
+                for row_offset in range(3):
+                    for col_offset in range(3):
+                        tile_row = row_base + row_offset
+                        tile_col = col_base + col_offset
+                        block_group.add(self.tiles[tile_row][tile_col])
+                self.groups.append(block_group)
 
-    def set_tiles(self, tile_values: List[str]):
+    def set_tiles(self, tile_values: Sequence[Sequence[str]]):
         """Set the tile values a list of lists or a list of strings"""
         for row_num in range(9):
             for col_num in range(9):
@@ -110,7 +124,7 @@ class Board(object):
                 return False
         return True
 
-    def duplicates(self) -> List[str]:
+    def duplicates(self) -> Sequence[str]:
         """A list of duplicates found in groups"""
         reports = []
         for group in self.groups:
@@ -119,8 +133,13 @@ class Board(object):
 
     def is_solved(self) -> bool:
         """Are we there yet?"""
-        # FIXME
-        return False
+        if not self.is_consistent():
+            return False
+        for row in self.tiles:
+            for tile in row:
+                if tile.value == UNKNOWN:
+                    return False
+        return True
 
     def __str__(self) -> str:
         return "\n".join(self.as_list())
