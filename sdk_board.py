@@ -3,11 +3,11 @@ A Sudoku board holds a 9x9 matrix of tiles.
 Each row and column and also 9 3x3 sub-blocks
 are treated as a group of 9 (sometimes called
 a 'nonet'); when solved, each group must contain
-exactly one occurence of each of the 9 symbols
+exactly one occurrence of each of the 9 symbols
 on the board.
 """
 
-from typing import Sequence, List
+from typing import List
 
 from events import Event, Listener
 from sdk_tile import Tile, UNKNOWN
@@ -17,7 +17,6 @@ import logging
 logging.basicConfig()
 log = logging.getLogger(__name__)
 log.setLevel(logging.WARN)
-
 
 # -------------------------------
 # Interface for listeners
@@ -97,7 +96,7 @@ class Board(object):
                         block_group.add(self.tiles[tile_row][tile_col])
                 self.groups.append(block_group)
 
-    def set_tiles(self, tile_values: Sequence[Sequence[str]]):
+    def set_tiles(self, tile_values: List[str]):
         """Set the tile values a list of lists or a list of strings"""
         for row_num in range(9):
             for col_num in range(9):
@@ -124,7 +123,7 @@ class Board(object):
                 return False
         return True
 
-    def duplicates(self) -> Sequence[str]:
+    def duplicates(self) -> List[str]:
         """A list of duplicates found in groups"""
         reports = []
         for group in self.groups:
