@@ -145,15 +145,16 @@ class Group(object):
                 if val in tile.candidates:
                     possible_tiles.append(tile)
 
-            possible_tile = possible_tiles[0]
             only_one_possible = len(possible_tiles) == 1
-            tile_is_unknown = possible_tile.value == sdk_tile.UNKNOWN
+            tile_is_unknown = False
+            if only_one_possible:
+                tile_is_unknown = possible_tiles[0].value == sdk_tile.UNKNOWN
 
             # If there is only one possible tile AND that tiles value is UNKNOWN
             # Then that tile must have that value
             if only_one_possible and tile_is_unknown:
                 all_but_val = set(sdk_tile.CHOICES) - {val}
-                possible_tile.eliminate(all_but_val)
+                possible_tiles[0].eliminate(all_but_val)
                 changed = True
 
         self.unattend()
