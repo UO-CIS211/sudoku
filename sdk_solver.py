@@ -57,8 +57,13 @@ def propagate(board: Board):
 
 def solve(board: Board) -> bool:
     """Main solver.  Initially this just invokes constraint
-    propagation.  In phase 2 of the project, you will add
+    propagation.  In part 2 of the project, you will add
     recursive back-tracking search (guess-and-check with recursion).
+    A complete solution for solve for part 2 will
+    - find the the best tile to guess values for
+    - guess every possible value for that tile
+    - if a guess is wrong, reset the board
+    - return True if the board is solved, false otherwise
     """
     log.debug("Called solve on board:\n{}".format(board))
     propagate(board)
@@ -78,16 +83,18 @@ def solve(board: Board) -> bool:
             if (tile.value == sdk_tile.UNKNOWN) and (len(tile.candidates) < min_candidates):
                 min_candidates = len(tile.candidates)
                 best_tile = tile
-    tile = best_tile
 
-    log.info("Guess-and-check on tile[{}][{}]".format(tile.row, tile.col))
+    assert not (best_tile is None)  # best_tile should never be None. If it is, we've made a mistake
+
+    log.info("Guess-and-check on tile[{}][{}]".format(best_tile.row, best_tile.col))
     saved = board.as_list()
-    for guess in tile.candidates:
-        tile.set_value(guess)
+    for guess in best_tile.candidates:
+        best_tile.set_value(guess)
         log.info("Guessing {}".format(guess))
         if solve(board):
             return True
-        else:
-            # Oops, restore old board and try again
-            board.set_tiles(saved)
+
+        # That guess didn't work. Restore old board and try again
+        board.set_tiles(saved)
+
     return False

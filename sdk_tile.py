@@ -136,12 +136,12 @@ class Tile(object):
         return value in self.candidates
 
     def eliminate(self, choices: Set[str]) -> bool:
-        """Eliminate the choices from candidates for
-        this tile.  May result in either setting the
-        value of this tile (if only one candidate remains)
-        or making this tile inconsistent.
-        Triggers a Changed event if there is any change to the tile.
-        Returns True if there is any change to the tile.
+        """
+        A complete solution for estimate will
+        - remove choices from the tiles candidates
+        - set the tiles value if the tile can be only one value
+        - notify all if the tile has changed
+        - return True if any either the tiles candidates or value has changed, False otherwise
         """
         #  Careful! If you want to compare the value
         # of candidates before and after the operation,
@@ -157,7 +157,7 @@ class Tile(object):
 
         # If there is only one value that the tile could be, make it that value
         if len(self.candidates) == 1:
-            self.value = self.candidates.copy().pop()
+            self.set_value(self.candidates.pop())
 
         # Something changed, so notify and return True
         self.notify_all(TileChanged(self))

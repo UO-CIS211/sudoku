@@ -131,7 +131,10 @@ class Board(object):
         return reports
 
     def is_solved(self) -> bool:
-        """Are we there yet?"""
+        """
+        A complete solution to is_solved will
+        - return False if the board is not solved, otherwise return True.
+        """
         if not self.is_consistent():
             return False
         for row in self.tiles:

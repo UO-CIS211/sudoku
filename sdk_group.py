@@ -58,9 +58,12 @@ class Group(object):
         return True
 
     def is_consistent(self) -> bool:
-        """A group is consistent if it has no duplicates,
-        every tile has at least one candidate, and
-        every possible value can be placed somewhere in the group.
+        """
+        A complete solution for is_consistent will return False if:
+        - a group has two or more tiles with the same value,
+        - any tile does not have at least one possible value
+        - any value in CHOICES can not be placed somewhere in the group.
+        return True otherwise
         """
 
         can_place = set()
@@ -86,11 +89,12 @@ class Group(object):
         reports = []
         used = set()
         for tile in self.tiles:
-            if tile.value == sdk_tile.UNKNOWN:
-                continue
-            elif tile.value in used:
+            if tile.value in used:
                 reports.append("Duplicate in {}: {}, value {}"
                                .format(self.title, self, tile.value))
+            if tile.value in sdk_tile.CHOICES:
+                used.add(tile.value)
+
         return reports
 
     # ---------------------------------
@@ -98,10 +102,12 @@ class Group(object):
     # ----------------------------------
 
     def naked_single_constrain(self) -> bool:
-        """A choice can be used at most once in the group.
-        For each choice that has already been used in the group,
-        eliminate that choice as a candidate in all the
-        UNKNOWN tiles in the group.
+        """
+        A choice may only exist once in a group
+        A complete solution to naked_single_constrain will:
+        - find all values in the group that are already set
+        - remove those values as possibilities from the unset tiles in the group
+        - return True if a change has been made, False otherwise
         """
 
         # Which values have already been used?
@@ -128,11 +134,13 @@ class Group(object):
         return changed
 
     def hidden_single_constrain(self) -> bool:
-        """Each choice must be used in the group.
-        For each choice that has not already been used
-        in the group, if there is exactly one tile in the
-        group for which it is a candidate, then that
-        tile must hold that choice.
+        """
+        Each choice must be possible in a group.
+        A complete solution for hidden_single_constrain will
+        - for each possible choice, if that choice can only
+          exist in one tile in the group, set the tile to be that choice
+        - return True if any tile was set, False otherwise
+
         """
         self.attend()
         changed = False
