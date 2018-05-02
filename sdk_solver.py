@@ -7,6 +7,7 @@ Author: FIXME
 """
 
 from sdk_board import Board
+import sdk_tile
 
 import logging
 logging.basicConfig()
@@ -61,4 +62,32 @@ def solve(board: Board) -> bool:
     """
     log.debug("Called solve on board:\n{}".format(board))
     propagate(board)
-    return board.is_solved()
+    if board.is_solved():
+        return True
+    if not board.is_consistent():
+        return False
+
+    log.info("Invoking back-track search")
+    # There must be at least one tile with value UNKNOWN
+    # and multiple candidate values.  Choose one with
+    # fewest candidates.
+    min_candidates = 999
+    best_tile = None
+    for row in board.tiles:
+        for tile in row:
+            if (tile.value == sdk_tile.UNKNOWN) and (len(tile.candidates) < min_candidates):
+                min_candidates = len(tile.candidates)
+                best_tile = tile
+    tile = best_tile
+
+    log.info("Guess-and-check on tile[{}][{}]".format(tile.row, tile.col))
+    saved = board.as_list()
+    for guess in tile.candidates:
+        tile.set_value(guess)
+        log.info("Guessing {}".format(guess))
+        if solve(board):
+            return True
+        else:
+            # Oops, restore old board and try again
+            board.set_tiles(saved)
+    return False
