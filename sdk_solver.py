@@ -61,7 +61,7 @@ def solve(board: Board) -> bool:
     recursive back-tracking search (guess-and-check with recursion).
     A complete solution for solve for part 2 will
     - find the the best tile to guess values for
-    - guess every possible value for that tile
+    - guess each possible value for that tile
     - if a guess is wrong, reset the board
     - return True if the board is solved, false otherwise
     """
