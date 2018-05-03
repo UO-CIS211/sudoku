@@ -76,7 +76,7 @@ def solve(board: Board) -> bool:
     # There must be at least one tile with value UNKNOWN
     # and multiple candidate values.  Choose one with
     # fewest candidates.
-    min_candidates = 999
+    min_candidates = len(sdk_tile.CHOICES) + 1
     best_tile = None
     for row in board.tiles:
         for tile in row:
