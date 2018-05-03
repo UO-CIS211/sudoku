@@ -138,9 +138,9 @@ class Group(object):
         Each choice must be possible in a group.
         A complete solution for hidden_single_constrain will
         - for each possible choice, if that choice can only
-          exist in one tile in the group, set the tile to be that choice
+          exist in one tile in the group and that tile is not
+          already set, set the tile to be that choice
         - return True if any tile was set, False otherwise
-
         """
         self.attend()
         changed = False
