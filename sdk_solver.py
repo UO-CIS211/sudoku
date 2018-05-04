@@ -7,6 +7,7 @@ Author: FIXME
 """
 
 from sdk_board import Board
+import sdk_tile
 
 import logging
 logging.basicConfig()
